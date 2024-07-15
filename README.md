@@ -1,0 +1,1 @@
+This mini-app shows the locations of Starbucks stores around the world
