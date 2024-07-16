@@ -25,7 +25,8 @@ fetchCountriesGeoJSON()
         countries = countriesGeoJSON.map(country => ({
             name: country.getProperties().ADMIN,
             code: country.getProperties().ISO_A3
-        }));
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
         onCountriesListReady(countries);
     })
     .catch(() => {
