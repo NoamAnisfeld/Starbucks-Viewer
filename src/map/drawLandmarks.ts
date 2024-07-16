@@ -9,6 +9,11 @@ export {
     drawLandmarks,
 };
 
+const countryPaintStyle = new Style({
+    fill: new Fill({ color: 'rgba(255, 255, 0, 0.1)' }),
+    stroke: new Stroke({ color: 'green', width: 5 }),
+})
+
 const imageStyle = new Style({
     image: new Circle({
         radius: 3,
@@ -25,7 +30,7 @@ tileLayer.on('postrender', function (event) {
     const vectorContext = getVectorContext(event);
 
     if (countryBoundary) {
-        vectorContext.setStyle(new Style({ fill: new Fill({ color: 'green' }) }));
+        vectorContext.setStyle(countryPaintStyle);
         vectorContext.drawGeometry(countryBoundary);
     }
 
