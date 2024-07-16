@@ -1,10 +1,9 @@
 import './App.css'
+import CountryPicker from './components/CountryPicker'
 
 function App() {
   return (
-    <h1>
-      App
-    </h1>
+    <CountryPicker />
   )
 }
 
