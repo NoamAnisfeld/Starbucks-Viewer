@@ -1,5 +1,4 @@
 import GeoJSON from 'ol/format/GeoJSON';
-import { toLonLat } from 'ol/proj';
 import type { Feature } from 'ol';
 import type { Geometry } from 'ol/geom';
 import type { Coordinate } from 'ol/coordinate';
@@ -60,8 +59,7 @@ function filterCoordinatesByCountry(coordinates: Coordinate[], countryCodeOrName
     }
 
     const filteredCoordinates = coordinates.filter(point => {
-        const pointLonLat = toLonLat(point);
-        return countryGeometry.containsXY(pointLonLat[0], pointLonLat[1]);
+        return countryGeometry.containsXY(point[0], point[1]);
     });
     return filteredCoordinates;
 }

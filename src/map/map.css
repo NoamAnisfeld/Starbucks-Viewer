@@ -1,6 +1,6 @@
 @import "node_modules/ol/ol.css";
 
 #map {
-  width: 90%;
+  width: 80%;
   height: 80%;
 }

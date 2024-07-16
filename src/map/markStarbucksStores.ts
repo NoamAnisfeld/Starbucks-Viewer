@@ -2,8 +2,6 @@ import { updateMarkedCoordinates } from './markLocations';
 import { filterCoordinatesByCountry } from './countriesData';
 import { starbucksStoreInfoSchema } from './schema-validation';
 import { visibleErrorMessage } from '../utils';
-
-import { fromLonLat } from 'ol/proj';
 import type { Coordinate } from 'ol/coordinate';
 
 export { filterMarksByCountry };
@@ -22,7 +20,7 @@ async function fetchStarbucksStoresCoordinates() {
         const data = await fetch(url);
         const json = await data.json();
         const storesInfo = starbucksStoreInfoSchema.array().parse(json);
-        const coordinates = storesInfo.map(({ longitude, latitude }) => fromLonLat([longitude, latitude]));
+        const coordinates = storesInfo.map(({ longitude, latitude }) => [longitude, latitude]);
         return coordinates;
     } catch (error) {
         throw Error('Unable to retrieve starbucks stores info');
