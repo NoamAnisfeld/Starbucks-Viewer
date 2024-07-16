@@ -1,16 +1,16 @@
-import { updateMarkedCoordinates } from './markLocations';
-import { filterCoordinatesByCountry } from './countriesData';
+import { drawCountryBoundary, drawLandmarks } from './drawLandmarks';
+import { filterCoordinatesByCountry, getCountryBoundary } from './countriesData';
 import { starbucksStoreInfoSchema } from './schema-validation';
 import { visibleErrorMessage } from '../utils';
 import type { Coordinate } from 'ol/coordinate';
 
-export { filterMarksByCountry };
+export { updateCountry };
 
-let coordinates: Coordinate[] = [];
+let starbucksStoresCoordinates: Coordinate[] = [];
 fetchStarbucksStoresCoordinates()
     .then(result => {
-        coordinates = result;
-        updateMarkedCoordinates(coordinates);
+        starbucksStoresCoordinates = result;
+        drawLandmarks(starbucksStoresCoordinates);
     })
     .catch(visibleErrorMessage);
 
@@ -27,10 +27,18 @@ async function fetchStarbucksStoresCoordinates() {
     }
 }
 
-function filterMarksByCountry(countryCodeOrName: string): void {
-    if (!countryCodeOrName) {
-        updateMarkedCoordinates(coordinates);
-    } else {
-        updateMarkedCoordinates(filterCoordinatesByCountry(coordinates, countryCodeOrName));
+function updateCountry(countryCodeOrName: string): void {
+
+    const countryBoundary = countryCodeOrName
+        ? getCountryBoundary(countryCodeOrName)
+        : undefined;
+
+    if (!countryBoundary) {
+        drawCountryBoundary();
+        drawLandmarks(starbucksStoresCoordinates);
+        return;
     }
+
+    drawCountryBoundary(countryBoundary);
+    drawLandmarks(filterCoordinatesByCountry(starbucksStoresCoordinates, countryBoundary));
 }

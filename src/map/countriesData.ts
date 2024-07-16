@@ -1,11 +1,12 @@
 import GeoJSON from 'ol/format/GeoJSON';
 import type { Feature } from 'ol';
-import type { Geometry } from 'ol/geom';
+import { Geometry } from 'ol/geom';
 import type { Coordinate } from 'ol/coordinate';
 import { useEffect, useState } from 'react';
 
 export {
-    filterCoordinatesByCountry,
+    getCountryBoundary,
+    filterCoordinates as filterCoordinatesByCountry,
     useCountries,
 };
 
@@ -39,7 +40,7 @@ async function fetchCountriesGeoJSON() {
     return features;
 }
 
-function filterCoordinatesByCountry(coordinates: Coordinate[], countryCodeOrName: string): Coordinate[] {
+function getCountryBoundary(countryCodeOrName: string) {
 
     if (!countryCodeOrName) {
         throw Error('A country code or name is missing');
@@ -55,11 +56,15 @@ function filterCoordinatesByCountry(coordinates: Coordinate[], countryCodeOrName
 
     if (!countryGeometry) {
         console.error(`unable to extract country's geometry: ${countryCodeOrName}`);
-        return [];
+        return;
     }
+    return countryGeometry;
+}
+
+function filterCoordinates(coordinates: Coordinate[], boundary: Geometry): Coordinate[] {
 
     const filteredCoordinates = coordinates.filter(point => {
-        return countryGeometry.containsXY(point[0], point[1]);
+        return boundary.containsXY(point[0], point[1]);
     });
     return filteredCoordinates;
 }
