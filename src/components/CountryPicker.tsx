@@ -9,16 +9,19 @@ export default function CountryPicker() {
         <label>
             {"Select a country: "}
             {countries.length
-                ? <select onChange={e => updateCountry(e.target.value)}>
+                ? <select defaultValue="" onChange={e => updateCountry(e.target.value)}>
                     <option value="">All</option>
-                    {countries.map((country) =>
-                        <option key={country.code || country.name} value={country.code || country.name}>
+                    {countries.map((country) => {
+                        const code = country.code && country.code !== '-99'
+                            ? country.code
+                            : country.name;
+                        return (<option key={code} value={code}>
                             {country.name}
                         </option>)
-                    }
+                    })}
                 </select>
                 : <select disabled>
-                    <option selected>Waiting for list of countries...</option>
+                    <option value="">Waiting for list of countries...</option>
                 </select>
             }
         </label>
